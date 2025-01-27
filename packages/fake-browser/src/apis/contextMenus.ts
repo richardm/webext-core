@@ -1,6 +1,7 @@
 import type { ContextMenus, Menus, Tabs } from 'webextension-polyfill';
 import { vi } from 'vitest';
 import { defineEventWithTrigger } from '../utils/defineEventWithTrigger';
+import { BrowserOverrides } from '../types';
 
 interface OnClickedCallback {
   (info: ContextMenus.Static['OnClickedCallback'], tab?: Tabs.Tab): void;
@@ -21,10 +22,10 @@ const onHidden = defineEventWithTrigger<OnHiddenCallback>();
 let menuItems: Record<string, Menus.CreateCreatePropertiesType> = {};
 
 // Reference: https://browserext.github.io/browserext/#contextMenus
-export const contextMenus: ContextMenus.Static = {
+export const contextMenus: BrowserOverrides['contextMenus'] = {
   ACTION_MENU_TOP_LEVEL_LIMIT: 6,
   create: (createProperties: Menus.CreateCreatePropertiesType, callback?: () => void) => {
-    const menuId: string | number = createProperties.id || `menu-${Date.now()}`;
+    const menuId = createProperties.id || `menu-${Date.now()}`;
     if (menuId in menuItems) {
       throw new Error(`Menu item with id ${menuId} already exists`);
     }
@@ -40,6 +41,12 @@ export const contextMenus: ContextMenus.Static = {
   remove: async (menuItemId: string | number) => {
     delete menuItems[menuItemId];
   },
+  resetState: () => {
+    menuItems = {};
+    onClicked.removeAllListeners();
+    onShown.removeAllListeners();
+    onHidden.removeAllListeners();
+  },
   onShown: onShown,
   onHidden: onHidden,
   overrideContext: vi.fn(),
@@ -48,7 +55,4 @@ export const contextMenus: ContextMenus.Static = {
 // Internal method used for testing only
 export const checkIdExists = (menuItemId: string | number) => {
   return menuItems[menuItemId] !== undefined;
-};
-export const resetMenuItems = () => {
-  menuItems = {};
 };

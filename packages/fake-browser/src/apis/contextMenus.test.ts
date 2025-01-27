@@ -1,13 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { checkIdExists, contextMenus, resetMenuItems } from './contextMenus';
 import { fakeBrowser } from '..';
+import { checkIdExists } from './contextMenus';
 
 describe('Context Menus API', () => {
   beforeEach(fakeBrowser.reset);
-  beforeEach(() => {
-    fakeBrowser.contextMenus = contextMenus;
-    resetMenuItems();
-  });
 
   describe('create', () => {
     it('should allow creating a context menu', async () => {

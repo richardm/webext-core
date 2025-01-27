@@ -1,4 +1,5 @@
 import { alarms } from './apis/alarms';
+import { contextMenus } from './apis/contextMenus';
 import { notifications } from './apis/notifications';
 import { runtime } from './apis/runtime';
 import { storage } from './apis/storage';
@@ -20,6 +21,7 @@ const overrides: BrowserOverrides = {
 
   // Implemented
   alarms,
+  contextMenus,
   notifications,
   runtime,
   storage,

@@ -1,6 +1,8 @@
 import type {
   Alarms,
   Browser,
+  ContextMenus,
+  Menus,
   Notifications,
   Runtime,
   Storage,
@@ -32,6 +34,12 @@ export interface BrowserOverrides {
   alarms: Alarms.Static & {
     resetState(): void;
     onAlarm: EventForTesting<[name: Alarms.Alarm]>;
+  };
+  contextMenus: ContextMenus.Static & {
+    resetState(): void;
+    onClicked: EventForTesting<[info: Menus.OnClickData, tab?: Tabs.Tab]>;
+    onShown: EventForTesting<[info: Menus.OnShownInfoType, tab?: Tabs.Tab]>;
+    onHidden: EventForTesting<[]>;
   };
   notifications: Notifications.Static & {
     resetState(): void;
