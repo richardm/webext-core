@@ -24,7 +24,7 @@ let menuItems: Record<string, Menus.CreateCreatePropertiesType> = {};
 export const contextMenus: ContextMenus.Static = {
   ACTION_MENU_TOP_LEVEL_LIMIT: 6,
   create: (createProperties: Menus.CreateCreatePropertiesType, callback?: () => void) => {
-    const menuId: string | number = createProperties.id || 'menu-id';
+    const menuId: string | number = createProperties.id || `menu-${Date.now()}`;
     if (menuId in menuItems) {
       throw new Error(`Menu item with id ${menuId} already exists`);
     }
